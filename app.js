@@ -1,4 +1,5 @@
 const express = require('express');
+const exphbs = require('express-handlebars');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
@@ -12,6 +13,7 @@ require('./config/passport')(passport);
 
 //Load routes
 const auth = require('./routes/auth');
+const index = require('./routes/index');
 
 // Load mongoose keys
 const keys = require('./config/keys');
@@ -26,11 +28,12 @@ mongoose.connect(keys.mongoURI, {
  .catch(err => console.log(err));
 
 const app = express();
-
-app.get('/',(req, res) => {
-  res.send('HOME');
-});
-
+/* ############## middlewares################
+// handlebars middleware */
+app.engine('handlebars', exphbs({
+  defaultLayout: 'main'
+}));
+app.set('view engine', 'handlebars');
 
 app.use(cookieParser());
 app.use(session({
@@ -50,6 +53,7 @@ app.use((req, res, next) => {
 });
 // use auth Routes : anything that routes to /auth goes to auth.js
 app.use('/auth', auth);
+app.use('/', index);
 
 
 
