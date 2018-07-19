@@ -15,4 +15,19 @@ router.get('/google/callback',
     res.redirect('/dashboard');
 });
 
+// to verify google auth was Successful
+router.get('/verify', (req, res) => {
+  if(req.user){
+    console.log(req.user);
+  }else {
+    console.log('not Auth');
+  }
+});
+// vitsit http://localhost:3000/auth/verify
+//logout
+router.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/');
+});
+
 module.exports = router;
