@@ -85,3 +85,4 @@ https://github.com/jaredhanson/passport-google-oauth2:
   - this is due to the presence of middleware underneatch routes, which was not getting used. hence middle ware should be placed before calling routes
 
   ## index routes and handlebars
+  
