@@ -1,4 +1,6 @@
 const express = require('express');
+// path for css
+const path = require('path')
 const exphbs = require('express-handlebars');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
@@ -14,6 +16,7 @@ require('./config/passport')(passport);
 //Load routes
 const auth = require('./routes/auth');
 const index = require('./routes/index');
+const stories = require('./routes/stories');
 
 // Load mongoose keys
 const keys = require('./config/keys');
@@ -51,9 +54,14 @@ app.use((req, res, next) => {
   res.locals.user = req.user || null;
   next();
 });
+
+// Set Static folder
+app.use(express.static(path.join(__dirname, 'public')));
+
 // use auth Routes : anything that routes to /auth goes to auth.js
 app.use('/auth', auth);
 app.use('/', index);
+app.use('/stories', stories);
 
 
 
