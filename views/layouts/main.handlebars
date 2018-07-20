@@ -29,10 +29,18 @@
     </script>
       <!-- Compiled and minified JavaScript -->
      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+     <!-- ck editor -->
+     <script src="https://cdn.ckeditor.com/4.10.0/standard/ckeditor.js"></script>
      <script type="text/javascript">
         $(document).ready(function(){
          $('.sidenav').sidenav();
+          $('select').formSelect();
         });
+        CKEDITOR.replace('body', {
+          plugins: 'wysiwygarea , toolbar, basicstyles, link'
+        });
+        // plugins object allows you to pass only what is needed and doesnot let edit source
+        // wysiwygarea - what you see is what you get area
       </script>
   </body>
 </html>
