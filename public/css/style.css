@@ -13,3 +13,12 @@ body {
   footer{
     margin-top: 20px;
   }
+  .story-text{
+    height: 120px;
+  }
+  .dash-staus{
+    text-transform: capitalize;
+  }
+  #delete-form{
+    display: inline;
+  }
