@@ -2,14 +2,15 @@ const express = require('express');
 // path for css
 const path = require('path')
 const exphbs = require('express-handlebars');
+const bodyParser = require('body-parser')
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const passport = require('passport');
 
-// Load User model
-
+// Load  models
 require('./models/user')
+require('./models/story')
 //passport config - the module in the file required is a function, which accepts an argument passport
 require('./config/passport')(passport);
 
@@ -21,6 +22,13 @@ const stories = require('./routes/stories');
 // Load mongoose keys
 const keys = require('./config/keys');
 
+// Handlebars helpers
+const {
+  truncate,
+  stripTags,
+  formatDate,
+  select
+} = require('./helpers/hbs');
 // Map global promises
 mongoose.Promise = global.Promise
 // mongoose connect
@@ -31,9 +39,20 @@ mongoose.connect(keys.mongoURI, {
  .catch(err => console.log(err));
 
 const app = express();
-/* ############## middlewares################
-// handlebars middleware */
+ // ############## middlewares################
+
+// body parser middleware
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+
+// handlebars middleware
 app.engine('handlebars', exphbs({
+  helpers: {
+    truncate: truncate,
+    stripTags: stripTags,
+    formatDate: formatDate,
+    select: select
+  },
   defaultLayout: 'main'
 }));
 app.set('view engine', 'handlebars');
