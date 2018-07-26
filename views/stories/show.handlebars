@@ -1,6 +1,7 @@
 <div class="row">
   <div class="col s12 m8">
     <h3>{{story.title}}</h3>
+    <small>{{{editIcon story.user.id user.id story.id false}}}</small>
     <div class="card story">
       <div class="card-content">
         <!-- moment js.org -->
@@ -9,6 +10,41 @@
         {{{story.body}}}
       </div>
     </div>
+<!-- comments for the story -->
+    {{#if story.allowComments}}
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">Comments</span>
+          {{#if user}}
+            <form class="" action="/stories/comment/{{story.id}}" method="post">
+              <div class="input-field">
+                <textarea name="commentBody" class="materialize-textarea"></textarea>
+                <label>Add Comment</label>
+              </div>
+              <input type="submit" class="btn" value="submit">
+            </form>
+          {{else}}
+            <!-- user not logged in -->
+            <p>Please <a href="/auth/google">login</a> to leave a comment</p>
+          {{/if}}
+        </div>
+<!-- loop through comments and dsiplay -->
+      {{#each story.comments}}
+      <div class="card">
+        <div class="card-content">
+          <h5>{{commentBody}}</h5>
+          <div class="chip">
+            <img src="{{commentUser.image}}">
+            <a href="/stories/user/{{commentUser.id}}">{{commentUser.firstName}} {{commentUser.lastName}}</a>
+          </div>
+          <br>
+          <small>Posted: {{formatDate commentDate 'MMMM Do YYYY'}}</small>
+        </div>
+      </div>
+      {{/each}}
+      </div>
+    {{/if}}
+
   </div>
   <div class="col s12 m4">
     <br><br><br><br>

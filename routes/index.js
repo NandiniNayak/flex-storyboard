@@ -11,6 +11,7 @@ router.get('/', ensureGuest, (req, res) => {
 });
 
 router.get('/dashboard', ensureAuthenticated, (req, res) => {
+  // show only stories of logged in user on their dashboard
   Story.find({user:req.user.id})
     .then(stories => {
       // res.send('DASHBOARD');

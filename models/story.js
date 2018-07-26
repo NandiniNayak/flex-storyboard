@@ -19,7 +19,7 @@ const StorySchema = new Schema({
     type: Boolean,
     default: true
   },
-  //comments is an array of objects
+  //comments is an arrays of objects
   comments: [{
     commentBody: {
       type: String,
