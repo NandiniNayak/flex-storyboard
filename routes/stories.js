@@ -51,7 +51,9 @@ router.get('/show/:id', (req, res) => {
           res.redirect('/stories');
         }
     }
+    // console.log(story.comments);
   });
+
 });
 
 
@@ -178,18 +180,50 @@ router.post('/comment/:id', (req,res) => {
     _id:req.params.id
   })
   .then(story => {
-    // create a new object comment
-    const newComment = {
-      commentBody: req.body.commentBody,
-      commentUser: req.user.id
-    }
-    // Add to comment array
-    // note: unshift will add comments at start of the array, hence showing lastest comments
-    story.comments.unshift(newComment);
-    story.save()
-    .then(story => {
+      // check if the commenting user is same as the story user if so don't let the user comment on his own story
+    console.log(story.user);
+    console.log(req.user.id);
+    if(story.user == req.user.id){
+      console.log('same user');
       res.redirect(`/stories/show/${story.id}`)
-    })
+    }else {
+      console.log('different user');
+      // create a new object comment
+      const newComment = {
+        commentBody: req.body.commentBody,
+        commentUser: req.user.id
+      }
+        // Add to comment array
+        // note: unshift will add comments at start of the array, hence showing lastest comments
+        story.comments.unshift(newComment);
+        story.save()
+        .then(story => {
+          res.redirect(`/stories/show/${story.id}`)
+        });
+    }
+  });
+});
+
+// delete comment
+router.delete('/:story_id/comments/:id', (req, res) => {
+  // find the story from the story_id param
+  console.log('found delete route');//Cannot DELETE /5b592e68eceba48a34cb4ffe/comments/5b5970453d2ae29ba4c2ec5b
+  Story.update({
+    $pull: { comments: { _id: req.params.id  } }
   })
-})
+  .then( () => {
+    console.log(S)
+  });
+  // .populate('comments')s
+  // .then(story => {
+  //     story.comments.findOne({_id: req.params.id})
+  //     .then( (story) => {
+  //       story.remove({_id: req.params.id})
+  //        .then( () => {
+  //          console.log('successfully deleted')
+  //          res.redirect(`/stories/show/${story.id}`)
+  //        });
+  //     });
+  //   });
+});
 module.exports = router;

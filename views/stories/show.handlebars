@@ -10,25 +10,26 @@
         {{{story.body}}}
       </div>
     </div>
-<!-- comments for the story -->
+    <!-- comments for the story -->
     {{#if story.allowComments}}
       <div class="card">
         <div class="card-content">
           <span class="card-title">Comments</span>
           {{#if user}}
-            <form class="" action="/stories/comment/{{story.id}}" method="post">
-              <div class="input-field">
-                <textarea name="commentBody" class="materialize-textarea"></textarea>
-                <label>Add Comment</label>
-              </div>
-              <input type="submit" class="btn" value="submit">
-            </form>
+               <!-- check if the comments user is same as the story user if so don't let the user comment on his own story -->
+              <form class="" action="/stories/comment/{{story.id}}" method="post">
+                <div class="input-field">
+                  <textarea name="commentBody" class="materialize-textarea"></textarea>
+                  <label>Add Comment</label>
+                </div>
+                <input type="submit" class="btn" value="submit">
+              </form>
           {{else}}
             <!-- user not logged in -->
             <p>Please <a href="/auth/google">login</a> to leave a comment</p>
           {{/if}}
         </div>
-<!-- loop through comments and dsiplay -->
+          <!-- loop through comments and dsiplay -->
       {{#each story.comments}}
       <div class="card">
         <div class="card-content">
@@ -39,12 +40,18 @@
           </div>
           <br>
           <small>Posted: {{formatDate commentDate 'MMMM Do YYYY'}}</small>
+          <!-- note: pass both story id and comment id in the route -->
+          <!-- since the story is outside of story.comments each loop use ../story.id
+          inside the each loop id refers to comment id -->
+          <form action="/stories/{{../story.id}}/comments/{{id}}?_method=DELETE" method="post">
+            <input type="hidden" name="_method" value="DELETE">
+            <button type="submit" class="btn red">delete</button>
+          </form>
         </div>
       </div>
       {{/each}}
       </div>
     {{/if}}
-
   </div>
   <div class="col s12 m4">
     <br><br><br><br>
