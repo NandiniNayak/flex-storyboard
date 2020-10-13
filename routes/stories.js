@@ -51,9 +51,7 @@ router.get('/show/:id', (req, res) => {
           res.redirect('/stories');
         }
     }
-    // console.log(story.comments);
   });
-
 });
 
 
@@ -211,19 +209,19 @@ router.delete('/:story_id/comments/:id', (req, res) => {
   Story.update({
     $pull: { comments: { _id: req.params.id  } }
   })
-  .then( () => {
-    console.log(S)
-  });
-  // .populate('comments')s
-  // .then(story => {
-  //     story.comments.findOne({_id: req.params.id})
-  //     .then( (story) => {
-  //       story.remove({_id: req.params.id})
-  //        .then( () => {
-  //          console.log('successfully deleted')
-  //          res.redirect(`/stories/show/${story.id}`)
-  //        });
-  //     });
-  //   });
+  // .then( (story) => {
+  //   console.log(story)
+  // });
+  .populate('comments')
+  .then(story => {
+      story.comments.findOne({_id: req.params.id})
+      .then( (story) => {
+        story.remove({_id: req.params.id})
+         .then( () => {
+           console.log('successfully deleted')
+           res.redirect(`/stories/show/${story.id}`)
+         });
+      });
+    });
 });
 module.exports = router;

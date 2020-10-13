@@ -81,6 +81,8 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use("/auth", auth);
+
 // Set global vars just like current_user if user logged in
 app.use((req, res, next) => {
   res.locals.user = req.user || null;
@@ -91,11 +93,11 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, "public")));
 
 // use auth Routes : anything that routes to /auth goes to auth.js
-app.use("/auth", auth);
+// app.use("/auth", auth);
 app.use("/", index);
 app.use("/stories", stories);
 
-var port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 // start the server and loisten on the port
 app.listen(port, () => {
   // res.send('HELLO');

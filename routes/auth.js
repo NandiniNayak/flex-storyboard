@@ -20,7 +20,7 @@ router.get('/verify', (req, res) => {
   if(req.user){
     console.log(req.user);
   }else {
-    console.log('not Auth');
+    console.log('not Authorised');
   }
 });
 // vitsit http://localhost:3000/auth/verify

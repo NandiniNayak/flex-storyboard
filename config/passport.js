@@ -14,11 +14,11 @@ module.exports = function(passport){
       callbackURL: '/auth/google/callback',
       proxy: true // enables working on heroku
     }, (accessToken, refreshToken, profile, done) => {
-       // console.log(accessToken);
-       // console.log(profile);
+       console.log("PROFILE", profile);
+       console.log("accesstoken", accessToken);
        // use substring to end the photo at jpeg
-       const image = profile.photos[0].value.substring(0, profile.photos[0].value.indexOf('?'));
-       console.log(image);
+        const image = profile.photos[0].value.substring(0, profile.photos[0].value.indexOf('='));
+        console.log("IMAGE", image);
        // create user with info coming from google profile
        const newUser = {
          googleID: profile.id,
@@ -27,6 +27,7 @@ module.exports = function(passport){
          email: profile.emails[0].value,
          image: image
        }
+       console.log("NEW USER", newUser)
        // check for existing user
        User.findOne({
          googleID: profile.id
@@ -34,6 +35,7 @@ module.exports = function(passport){
        .then(user => {
          if(user){
            // return the user already created
+           console.log("USER",user)
            done(null, user);
          }else {
            // create user and return it

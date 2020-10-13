@@ -12,6 +12,7 @@
   <body>
     {{> _header}}
     <!-- if user logged in show floating button to add stories -->
+    {{!-- req.session.user - req obj is not available in handlebars --}}
     {{#if user}}
       {{> _add-btn}}
     {{/if}}
